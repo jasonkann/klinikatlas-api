@@ -15,7 +15,10 @@ configuration = klinikatlas.Configuration(
     host = "https://klinikatlas.api.proxy.bund.dev"
 )
 
-
+def dump_file(filename, filecontent):
+    with open(filename,'w') as file1:
+        for line in filecontent:
+            file1.write("%s" % line)
 
 # Enter a context with an instance of the API client
 with klinikatlas.ApiClient(configuration) as api_client:
@@ -26,9 +29,11 @@ with klinikatlas.ApiClient(configuration) as api_client:
         # Liste deutscher Orte abrufen
         api_response = api_instance.fileadmin_json_german_places_json_get()
         # dump the json-file
-        with open('klinikdaten.json','w') as file1:
-            for line in api_response:
-                file1.write("%s" % line)
+        dump_file('german_places.json',api_response)
+        # list of german states 
+        api_response = api_instance.fileadmin_json_german_states_json_get()
+        dump_file('german_states.json', api_response)
+
         # pprint(api_response)
     except klinikatlas.ApiException as e:
         print("Exception when calling DefaultApi->fileadmin_json_german_places_json_get: %s\n" % e)
