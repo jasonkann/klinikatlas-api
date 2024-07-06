@@ -26,7 +26,7 @@ with klinikatlas.ApiClient(configuration) as api_client:
         # Liste deutscher Orte abrufen
         api_response = api_instance.fileadmin_json_german_places_json_get()
         # dump the json-file
-        with open('klinikdaten.json','w', encoding='uft8') as f:
+        with open('klinikdaten.json','w', encoding='utf8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)  
         # pprint(api_response)
     except klinikatlas.ApiException as e:
