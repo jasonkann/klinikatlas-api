@@ -33,6 +33,18 @@ with klinikatlas.ApiClient(configuration) as api_client:
         # list of german states 
         api_response = api_instance.fileadmin_json_german_states_json_get()
         dump_file('german_states.json', api_response)
+        # list of icd_codes 
+        api_response = api_instance.fileadmin_json_icd_codes_json_get()
+        dump_file('icd_codes.json', api_response)
+        # list of locations_json
+        api_response = api_instance.fileadmin_json_locations_json_get()
+        dump_file('locations.json', api_response)
+        # list of ops_codes
+        api_response = api_instance.fileadmin_json_ops_codes_json_get()
+        dump_file('ops_codes.json',api_response)
+        # list of states_json
+        api_response = api_instance.fileadmin_json_states_json_get()
+        dump_file('states.json', api_response)
 
         # pprint(api_response)
     except klinikatlas.ApiException as e:
