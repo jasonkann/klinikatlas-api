@@ -1,4 +1,4 @@
-import time, json
+import time, json, csv
 from deutschland import klinikatlas
 from pprint import pprint
 from deutschland.klinikatlas.api import default_api
@@ -15,6 +15,24 @@ configuration = klinikatlas.Configuration(
     host = "https://klinikatlas.api.proxy.bund.dev"
 )
 
+def convertJsonToCsv (srcfilename):
+    header = ''
+    length = len(srcfilename)
+    targetfilename = srcfilename[:length-3]+'.csv'
+    with open(srcfilename) as json_file:
+        jsoncontent = json.load(json_file)
+    targetfile = open(targetfilename,'w',newline='')
+    csvwriter = csv.writer(targetfile)
+    count = 0 
+    for data in jsoncontent:
+        if count == 0:
+            header == data.keys()
+            csvwriter.writerow(header)
+            count += 1
+        csvwriter.writerow(data.values())
+    targetfile.close()
+
+
 def replaceStringFromFile(filename):
     with open (filename,'r') as file1:
         filedata = file1.read()
@@ -26,6 +44,7 @@ def dump_file(filename, filecontent):
     with open(filename,'w') as file1:
         pprint(filecontent,file1)
     replaceStringFromFile(filename)
+    convertJsonToCsv(filename)
 
 # Enter a context with an instance of the API client
 with klinikatlas.ApiClient(configuration) as api_client:
