@@ -1,0 +1,5 @@
+python-client/poetry.lock 
+python-client/deutschland/klinikatlas/__pycache__/
+python-client/deutschland/klinikatlas/api/__pycache__/
+python-client/deutschland/klinikatlas/model/__pycache__/
+*.json
