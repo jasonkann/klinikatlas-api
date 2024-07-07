@@ -15,9 +15,17 @@ configuration = klinikatlas.Configuration(
     host = "https://klinikatlas.api.proxy.bund.dev"
 )
 
+def replaceStringFromFile(filename):
+    with open (filename,'r') as file1:
+        filedata = file1.read()
+    filedata = filedata.replace("'",'"')
+    with open (filename,'w') as file1:
+        file1.write(filedata)
+
 def dump_file(filename, filecontent):
     with open(filename,'w') as file1:
         pprint(filecontent,file1)
+    replaceStringFromFile(filename)
 
 # Enter a context with an instance of the API client
 with klinikatlas.ApiClient(configuration) as api_client:
