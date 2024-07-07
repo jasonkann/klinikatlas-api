@@ -17,8 +17,7 @@ configuration = klinikatlas.Configuration(
 
 def dump_file(filename, filecontent):
     with open(filename,'w') as file1:
-        for line in filecontent:
-            file1.write("%s" % line)
+        pprint(filecontent,file1)
 
 # Enter a context with an instance of the API client
 with klinikatlas.ApiClient(configuration) as api_client:
@@ -45,6 +44,7 @@ with klinikatlas.ApiClient(configuration) as api_client:
         # list of states_json
         api_response = api_instance.fileadmin_json_states_json_get()
         dump_file('states.json', api_response)
+        api_response
 
         # pprint(api_response)
     except klinikatlas.ApiException as e:
