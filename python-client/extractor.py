@@ -20,7 +20,7 @@ def convertJsonToCsv (srcfilename):
     length = len(srcfilename)
     targetfilename = srcfilename[:length-3]+'.csv'
     with open(srcfilename) as json_file:
-        jsoncontent = json.load(json_file)
+        jsoncontent = json.loads(json_file)  
     targetfile = open(targetfilename,'w',newline='')
     csvwriter = csv.writer(targetfile)
     count = 0 
@@ -35,16 +35,15 @@ def convertJsonToCsv (srcfilename):
 
 def replaceStringFromFile(filename):
     with open (filename,'r') as file1:
-        filedata = file1.read()
-    filedata = filedata.replace("'",'"')
-    with open (filename,'w') as file1:
-        file1.write(filedata)
+        filedata = eval(file1.read().strip())
+    with open (filename+'.new','w') as file1:
+        file1.write(json.dumps(filedata))
 
 def dump_file(filename, filecontent):
     with open(filename,'w') as file1:
         pprint(filecontent,file1)
     replaceStringFromFile(filename)
-    convertJsonToCsv(filename)
+    # convertJsonToCsv(filename)
 
 # Enter a context with an instance of the API client
 with klinikatlas.ApiClient(configuration) as api_client:
