@@ -19,10 +19,10 @@ def convertJsonToCsv (srcfilename):
     header = ''
     length = len(srcfilename)
     targetfilename = srcfilename[:length-3]+'.csv'
-    with open(srcfilename) as json_file:
-        jsoncontent = json.loads(json_file)  
+    with open(srcfilename,'r') as json_file:
+        jsoncontent = json.load(json_file)  
     targetfile = open(targetfilename,'w',newline='')
-    csvwriter = csv.writer(targetfile)
+    csvwriter = csv.writer(targetfile,quoting=csv.QUOTE_NONNUMERIC)
     count = 0 
     for data in jsoncontent:
         if count == 0:
