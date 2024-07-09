@@ -50,10 +50,10 @@ def dump_file(filename, filecontent):
     if not os.path.isfile(filename): 
         with open(filename,'w') as file1:
             pprint(filecontent,file1)
-        replaceStringFromFile(filename)
-        # convertJsonToCsv(filename)
     else:
         print("Datei "+ filename + " existiert schon, ueberspringe Bearbeitung")
+    replaceStringFromFile(filename)
+    # convertJsonToCsv(filename)
 
 
 # Enter a context with an instance of the API client
