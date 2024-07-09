@@ -1,4 +1,4 @@
-import time, json, csv, os
+import time, json, csv, os, datetime
 from deutschland import klinikatlas
 from pprint import pprint
 from deutschland.klinikatlas.api import default_api
@@ -15,13 +15,22 @@ configuration = klinikatlas.Configuration(
     host = "https://klinikatlas.api.proxy.bund.dev"
 )
 
+def logOutput (filename,status): 
+    ct = datetime.datetime.now()
+    # Creation 
+    if(status=='C'): 
+        print(ct + " Erstelle " + filename)
+    # Finished 
+    if(status=="F"):
+        print(ct + " Erstellt: " + filename)
+
 def convertJsonToCsv (filename_base):
     header = ''
     tgtfilename = filename_base + '.csv'
     srcfilename = filename_base + '.json'    
     with open(srcfilename,'r') as json_file:
         jsoncontent = json.load(json_file)
-    print("Erstelle CSV-Datei "+ tgtfilename)
+    logOutput(tgtfilename,'C')
     targetfile = open(tgtfilename,'w',newline='')
     # csv.QUOTE_ALL
     csvwriter = csv.writer(targetfile,quoting=csv.QUOTE_NONNUMERIC)
@@ -33,7 +42,7 @@ def convertJsonToCsv (filename_base):
             count += 1
         csvwriter.writerow(data.values())
     targetfile.close()
-    print("Erstellt: " + tgtfilename)
+    logOutput(tgtfilename,'F')
 
 
 def transformToJson(filename_base):
@@ -43,24 +52,24 @@ def transformToJson(filename_base):
     srcfilename = filename_base + '.tmp'
     if not os.path.isfile(tgtfilename): 
         # existiert nicht ....
-        print("Erstelle JSon-Datei "+ tgtfilename)
+        logOutput(tgtfilename,'C')
         with open(srcfilename,'r') as fileread1:
             my_dict = fileread1.read().strip()
             l = eval(my_dict)
             #print(json.dumps(l))
         with open(tgtfilename,'w') as filewrite1:
             filewrite1.write(json.dumps(l))
-        print("Erstellt: "+ tgtfilename)
+        logOutput(tgtfilename,'F')
     else: 
         print("Datei "+ tgtfilename + " existiert schon, ueberspringe Bearbeitung")
 
 def dump_file(filename_base, filecontent):
     filename = filename_base+".tmp"
     if not os.path.isfile(filename): 
-        print("Erstelle Tmp-Datei "+ filename)
+        logOutput(filename,'C')
         with open(filename,'w') as file1:
             pprint(filecontent,file1)
-        print("Erstellt: "+ filename)
+        logOutput(filename,'F')
     else:
         print("Datei "+ filename + " existiert schon, ueberspringe Bearbeitung")
     transformToJson(filename_base)
