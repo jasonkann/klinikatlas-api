@@ -15,13 +15,14 @@ configuration = klinikatlas.Configuration(
     host = "https://klinikatlas.api.proxy.bund.dev"
 )
 
-def convertJsonToCsv (srcfilename):
+def convertJsonToCsv (filename_base):
     header = ''
-    length = len(srcfilename)
-    targetfilename = srcfilename[:length-3]+'.csv'
+    tgtfilename = filename_base + '.csv'
+    srcfilename = filename_base + '.json'    
     with open(srcfilename,'r') as json_file:
-        jsoncontent = json.load(json_file)  
-    targetfile = open(targetfilename,'w',newline='')
+        jsoncontent = json.load(json_file)
+    print("Erstelle CSV-Datei "+ tgtfilename)
+    targetfile = open(tgtfilename,'w',newline='')
     # csv.QUOTE_ALL
     csvwriter = csv.writer(targetfile,quoting=csv.QUOTE_NONNUMERIC)
     count = 0 
@@ -32,29 +33,38 @@ def convertJsonToCsv (srcfilename):
             count += 1
         csvwriter.writerow(data.values())
     targetfile.close()
+    print("Erstellt: " + tgtfilename)
 
 
-def transformToJson(filename):
-    if not os.path.isfile(filename+'.new'): 
+def transformToJson(filename_base):
+    # tgtfile 
+    tgtfilename = filename_base + '.json'
+    # srcfile 
+    srcfilename = filename_base + '.tmp'
+    if not os.path.isfile(tgtfilename): 
         # existiert nicht ....
-        print("Bearbeite "+filename+"...")
-        with open(filename,'r') as fileread1:
+        print("Erstelle JSon-Datei "+ tgtfilename)
+        with open(srcfilename,'r') as fileread1:
             my_dict = fileread1.read().strip()
             l = eval(my_dict)
             #print(json.dumps(l))
-        with open(filename+'.new','w') as filewrite1:
+        with open(tgtfilename,'w') as filewrite1:
             filewrite1.write(json.dumps(l))
+        print("Erstellt: "+ tgtfilename)
     else: 
-        print("Datei "+ filename + " existiert schon, ueberspringe Bearbeitung")
+        print("Datei "+ tgtfilename + " existiert schon, ueberspringe Bearbeitung")
 
-def dump_file(filename, filecontent):
+def dump_file(filename_base, filecontent):
+    filename = filename_base+".tmp"
     if not os.path.isfile(filename): 
+        print("Erstelle Tmp-Datei "+ filename)
         with open(filename,'w') as file1:
             pprint(filecontent,file1)
+        print("Erstellt: "+ filename)
     else:
         print("Datei "+ filename + " existiert schon, ueberspringe Bearbeitung")
-    transformToJson(filename)
-    # convertJsonToCsv(filename)
+    transformToJson(filename_base)
+    convertJsonToCsv(filename_base)
 
 
 # Enter a context with an instance of the API client
@@ -65,22 +75,22 @@ with klinikatlas.ApiClient(configuration) as api_client:
     try:
         # Liste deutscher Orte abrufen
         api_response = api_instance.fileadmin_json_german_places_json_get()
-        dump_file('german_places.json',api_response)
+        dump_file('german_places',api_response)
         # list of german states 
         api_response = api_instance.fileadmin_json_german_states_json_get()
-        dump_file('german_states.json', api_response)
+        dump_file('german_states', api_response)
         # list of icd_codes 
         api_response = api_instance.fileadmin_json_icd_codes_json_get()
-        dump_file('icd_codes.json', api_response)
+        dump_file('icd_codes', api_response)
         # list of locations_json
         api_response = api_instance.fileadmin_json_locations_json_get()
-        dump_file('locations.json', api_response)
+        dump_file('locations', api_response)
         # list of ops_codes
         api_response = api_instance.fileadmin_json_ops_codes_json_get()
-        dump_file('ops_codes.json',api_response)
+        dump_file('ops_codes',api_response)
         # list of states_json
         api_response = api_instance.fileadmin_json_states_json_get()
-        dump_file('states.json', api_response)
+        dump_file('states', api_response)
         # pprint(api_response)
     except klinikatlas.ApiException as e:
         print("Exception when calling DefaultApi->fileadmin_json_german_places_json_get: %s\n" % e)
