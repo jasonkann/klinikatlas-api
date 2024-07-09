@@ -33,7 +33,7 @@ def convertJsonToCsv (srcfilename):
     targetfile.close()
 
 
-def replaceStringFromFile(filename):
+def transformToJson(filename):
     if not os.path.isfile(filename+'.new'): 
         # existiert nicht ....
         print("Bearbeite "+filename+"...")
@@ -52,7 +52,7 @@ def dump_file(filename, filecontent):
             pprint(filecontent,file1)
     else:
         print("Datei "+ filename + " existiert schon, ueberspringe Bearbeitung")
-    replaceStringFromFile(filename)
+    transformToJson(filename)
     # convertJsonToCsv(filename)
 
 
