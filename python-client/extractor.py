@@ -47,13 +47,14 @@ def replaceStringFromFile(filename):
         print("Datei "+ filename + " existiert schon, ueberspringe Bearbeitung")
 
 def dump_file(filename, filecontent):
-    with open(filename,'w') as file1:
-        pprint(filecontent,file1)
-    replaceStringFromFile(filename)
-    # convertJsonToCsv(filename)
+    if not os.path.isfile(filename): 
+        with open(filename,'w') as file1:
+            pprint(filecontent,file1)
+        replaceStringFromFile(filename)
+        # convertJsonToCsv(filename)
+    else:
+        print("Datei "+ filename + " existiert schon, ueberspringe Bearbeitung")
 
-def exists_file_in_current_folder(filename): 
-    ds
 
 # Enter a context with an instance of the API client
 with klinikatlas.ApiClient(configuration) as api_client:
