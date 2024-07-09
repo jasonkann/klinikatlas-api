@@ -1,4 +1,4 @@
-import time, json, csv
+import time, json, csv, os
 from deutschland import klinikatlas
 from pprint import pprint
 from deutschland.klinikatlas.api import default_api
@@ -34,16 +34,26 @@ def convertJsonToCsv (srcfilename):
 
 
 def replaceStringFromFile(filename):
-    with open (filename,'r') as file1:
-        filedata = eval(file1.read().strip())
-    with open (filename+'.new','w') as file1:
-        file1.write(json.dumps(filedata))
+    if not os.path.isfile(filename): 
+        # existiert nicht ....
+        print("Bearbeite "+filename+"...")
+        with open(filename,'r') as fileread1:
+            my_dict = fileread1.read().strip()
+            l = eval(my_dict)
+            #print(json.dumps(l))
+        with open(filename+'.new','w') as filewrite1:
+            filewrite1.write(json.dumps(l))
+    else: 
+        print("Datei "+ filename + " existiert schon, ueberspringe Bearbeitung")
 
 def dump_file(filename, filecontent):
     with open(filename,'w') as file1:
         pprint(filecontent,file1)
     replaceStringFromFile(filename)
     # convertJsonToCsv(filename)
+
+def exists_file_in_current_folder(filename): 
+    ds
 
 # Enter a context with an instance of the API client
 with klinikatlas.ApiClient(configuration) as api_client:
