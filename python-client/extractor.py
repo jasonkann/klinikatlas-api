@@ -19,10 +19,10 @@ def logOutput (filename,status):
     ct = datetime.datetime.now()
     # Creation 
     if(status=='C'): 
-        print(ct + " Erstelle " + filename)
+        print(ct, " Erstelle " + filename)
     # Finished 
     if(status=="F"):
-        print(ct + " Erstellt: " + filename)
+        print(ct, " Erstellt: " + filename)
 
 def convertJsonToCsv (filename_base):
     header = ''
