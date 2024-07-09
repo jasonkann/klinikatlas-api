@@ -34,7 +34,7 @@ def convertJsonToCsv (srcfilename):
 
 
 def replaceStringFromFile(filename):
-    if not os.path.isfile(filename): 
+    if not os.path.isfile(filename+'.new'): 
         # existiert nicht ....
         print("Bearbeite "+filename+"...")
         with open(filename,'r') as fileread1:
