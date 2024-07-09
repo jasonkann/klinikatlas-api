@@ -22,6 +22,7 @@ def convertJsonToCsv (srcfilename):
     with open(srcfilename,'r') as json_file:
         jsoncontent = json.load(json_file)  
     targetfile = open(targetfilename,'w',newline='')
+    # csv.QUOTE_ALL
     csvwriter = csv.writer(targetfile,quoting=csv.QUOTE_NONNUMERIC)
     count = 0 
     for data in jsoncontent:
@@ -64,7 +65,6 @@ with klinikatlas.ApiClient(configuration) as api_client:
     try:
         # Liste deutscher Orte abrufen
         api_response = api_instance.fileadmin_json_german_places_json_get()
-        # dump the json-file
         dump_file('german_places.json',api_response)
         # list of german states 
         api_response = api_instance.fileadmin_json_german_states_json_get()
@@ -81,8 +81,6 @@ with klinikatlas.ApiClient(configuration) as api_client:
         # list of states_json
         api_response = api_instance.fileadmin_json_states_json_get()
         dump_file('states.json', api_response)
-        api_response
-
         # pprint(api_response)
     except klinikatlas.ApiException as e:
         print("Exception when calling DefaultApi->fileadmin_json_german_places_json_get: %s\n" % e)
