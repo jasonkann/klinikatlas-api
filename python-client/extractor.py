@@ -103,3 +103,27 @@ with klinikatlas.ApiClient(configuration) as api_client:
         # pprint(api_response)
     except klinikatlas.ApiException as e:
         print("Exception when calling DefaultApi->fileadmin_json_german_places_json_get: %s\n" % e)
+
+
+def execute_response(api_kind):
+    with klinikatlas.ApiClient(configuration) as api_client:
+        # Create an instance of the API class
+        api_instance = default_api.DefaultApi(api_client)
+        
+        try:
+            if api_kind == 'german_places':
+                api_response = api_instance.fileadmin_json_german_places_json_get()
+            if api_kind == 'german_states':
+                api_response = api_instance.fileadmin_json_german_states_json_get()
+            if api_kind == 'icd_codes':
+                api_response = api_instance.fileadmin_json_icd_codes_json_get()
+            if api_kind == 'locations':
+                api_response = api_instance.fileadmin_json_locations_json_get()
+            if api_kind == 'ops_codes':
+                api_response = api_instance.fileadmin_json_ops_codes_json_get()
+            if api_kind == 'states':
+                api_response = api_instance.fileadmin_json_states_json_get()
+            dump_file(api_kind, api_response)
+        
+        except klinikatlas.ApiException as e:
+            print("Fehler beim Aufrufen der Api->" + api_kind + " : %s\n" % e)
